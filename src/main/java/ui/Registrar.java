@@ -244,11 +244,6 @@ public final class Registrar extends javax.swing.JFrame implements CadastroForm{
     }
 
     @Override
-    public void setSenha(String text) {
-        this.txtSenha.setText(text);
-    }
-
-    @Override
     public String getRua() {
         return this.txtRua.getText();
     }

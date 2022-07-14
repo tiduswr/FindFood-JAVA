@@ -8,7 +8,6 @@ public interface CadastroForm{
     public String getCPF();
     public void setCPF(String text);
     public String getSenha();
-    public void setSenha(String text);
     public String getRua();
     public void setRua(String text);
     public String getBairro();

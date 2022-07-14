@@ -21,23 +21,10 @@ public final class MenuLateral extends javax.swing.JPanel {
     private String tipoUsuario;
     
     public MenuLateral(MenuCentral form) {
-        if(!(MenuCentral.getFrame() == null)){
-            try {
-                this.tipoUsuario = form.getTipoUser();
-            } catch (JsonProcessingException ex) {
-                Logger.getLogger(MenuLateral.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
         initComponents();
         setOpaque(false);
         listMenu.setOpaque(false);
-        if(tipoUsuario != null){
-            if(tipoUsuario.equalsIgnoreCase("adm")){
-                initUsuario();
-            }else if (tipoUsuario.equalsIgnoreCase("cliente")){
-                initAdm();
-            }
-        }
+        config(form);
     }
     
     public MenuLateral(){
@@ -46,19 +33,37 @@ public final class MenuLateral extends javax.swing.JPanel {
         listMenu.setOpaque(false);
     }
     
+    public void config(MenuCentral form){
+        if(!(MenuCentral.getFrame() == null)){
+            try {
+                this.tipoUsuario = form.getTipoUser();
+            } catch (JsonProcessingException ex) {
+                Logger.getLogger(MenuLateral.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        if(tipoUsuario != null){
+            if(tipoUsuario.equalsIgnoreCase("administrador")){
+                initAdm();
+            }else if (tipoUsuario.equalsIgnoreCase("cliente")){
+                initUsuario();
+            }
+        }
+        repaint();
+    }
+    
     private void initUsuario(){
         this.listMenu.addItem(new ModelMenu("", "Ações do Usuário", ModelMenu.MenuType.TITLE));
-        this.listMenu.addItem(new ModelMenu("transferencia.png", "Gerir Contas", ModelMenu.MenuType.MENU));
-        this.listMenu.addItem(new ModelMenu("historicoConta.png", "Histórico", ModelMenu.MenuType.MENU));
-        this.listMenu.addItem(new ModelMenu("solicitarConta.png", "Solicitar Nova Conta", ModelMenu.MenuType.MENU));
+        this.listMenu.addItem(new ModelMenu("user.png", "Conta", ModelMenu.MenuType.MENU));
+        this.listMenu.addItem(new ModelMenu("produtos.png", "Comprar Produtos", ModelMenu.MenuType.MENU));
+        this.listMenu.addItem(new ModelMenu("historico.png", "Histórico", ModelMenu.MenuType.MENU));
         this.listMenu.addItem(new ModelMenu("logout1.png", "Sair", ModelMenu.MenuType.MENU));
     }
     
     private void initAdm(){
         this.listMenu.addItem(new ModelMenu("", "Ações do Administrador", ModelMenu.MenuType.TITLE));
-        this.listMenu.addItem(new ModelMenu("aprovar.png", "Ativar Conta/Usuario", ModelMenu.MenuType.MENU));
-        this.listMenu.addItem(new ModelMenu("inativar.png", "Inativar Conta/Usuario", ModelMenu.MenuType.MENU));
-        this.listMenu.addItem(new ModelMenu("historicoConta.png", "Histórico Completo", ModelMenu.MenuType.MENU));
+        this.listMenu.addItem(new ModelMenu("user.png", "Conta", ModelMenu.MenuType.MENU));
+        this.listMenu.addItem(new ModelMenu("produtos.png", "Gerencia Produtos", ModelMenu.MenuType.MENU));
+        this.listMenu.addItem(new ModelMenu("historico.png", "Histórico", ModelMenu.MenuType.MENU));
         this.listMenu.addItem(new ModelMenu("logout1.png", "Sair", ModelMenu.MenuType.MENU));
     }
     

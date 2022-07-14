@@ -31,7 +31,7 @@ public enum TipoUsuario {
     private static final Map<String, TipoUsuario> namesMap = new HashMap<>(2);
 
     static {
-        namesMap.put("adm", Administrador);
+        namesMap.put("administrador", Administrador);
         namesMap.put("cliente", Cliente);
     }
 

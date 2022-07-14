@@ -113,8 +113,51 @@ public final class Controller {
         return false;
     }
     
+    public void loadUserDataOnCadastroForm(CadastroForm f){
+        if(logged != null){
+            updateLogged();
+            
+            f.setCPF(logged.getCpf());
+            f.setNome(logged.getNome());
+            f.setSobrenome(logged.getSobrenome());
+            
+            f.setRua(logged.getEndereco().getRua());
+            f.setBairro(logged.getEndereco().getBairro());
+            f.setNumero(logged.getEndereco().getNumero());
+            f.setCidade(logged.getEndereco().getCidade());
+            f.setEstado(logged.getEndereco().getEstado());
+            
+            if(logged.getAccess().getTipo() == TipoUsuario.Administrador){
+                f.setTipoUsuario("Administrador");
+            }else if(logged.getAccess().getTipo() == TipoUsuario.Cliente){
+                f.setTipoUsuario("Cliente");
+            }
+            
+        }
+    }
+    
+    public void updateHeader(HeaderComponent h){
+        if(logged != null){
+            updateLogged();
+            
+            h.setSaldo(logged.getAccess().getSaldo());
+            String userName = logged.getNome() + " " + logged.getSobrenome();
+            userName += "(" + logged.getAccess().getTipo().toValue().toUpperCase() + ")";
+            h.setUserName(userName);
+            
+        }
+    }
+    
     public String getLogged() throws JsonProcessingException{
+        if(logged != null) updateLogged();
         return Util.toJson(logged);
+    }
+    
+    private void updateLogged(){
+        ConcreteRepository<Pessoa> repPessoa = new ConcreteRepository(emf, em);
+        Query q = em.createQuery("FROM Pessoa WHERE cpf = :cpf");
+        q.setParameter("cpf", logged.getCpf());
+        logged = repPessoa.retrieve(q);
     }
     
 }
