@@ -35,5 +35,5 @@ public class Util {
         return dateToConvert.toInstant()
           .atZone(ZoneId.systemDefault())
           .toLocalDate();
-}
+    }
 }

@@ -90,6 +90,7 @@ public final class MenuCentral extends javax.swing.JFrame {
                     setForm(new UserCentral(con));
                     break;
                 case 2:
+                    setForm(new CadastroProduto(con));
                     break;
                 case 3:
                     break;

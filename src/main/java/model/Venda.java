@@ -40,11 +40,16 @@ public class Venda implements Serializable{
     @JoinColumn(name = "user_id")
     private Pessoa owner;
     
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id")
+    private Pessoa seller;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
     private List<VendaProduto> produtos;
 
-    public Venda(Long id, Pessoa owner) {
+    public Venda(Long id, Pessoa owner, Pessoa seller) {
         this.id = id;
+        this.seller = seller;
         this.total = 0;
         this.date = Util.convertToLocalDateViaInstant(new Date());
         this.owner = owner;
@@ -118,6 +123,14 @@ public class Venda implements Serializable{
     @Override
     public String toString() {
         return "Venda{" + "id=" + id + ", total=" + total + ", date=" + date + ", owner=" + owner + '}';
+    }
+
+    public Pessoa getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Pessoa seller) {
+        this.seller = seller;
     }
     
 }

@@ -43,6 +43,11 @@ public class PersistenceTest {
         Usuario user = new Usuario(null, 100d, "xxx", TipoUsuario.Cliente);
         p1.setAccess(user);
         pv.persist(p1);
+        Pessoa p2 = new Pessoa(null, "Neto", "Alves", "69741558082", null, 
+                new Endereco("rua", "bairro", "cidade", "estado", 12));
+        Usuario user2 = new Usuario(null, 100d, "xxx", TipoUsuario.Cliente);
+        p1.setAccess(user2);
+        pv.persist(p2);
         System.out.println("!!!!!!!!!! SUCCESS !!!!!!!!!!!\n\n");
     }
     
@@ -98,7 +103,11 @@ public class PersistenceTest {
         q.setParameter("cpf", "12679692454");
         Pessoa p1 = pv.retrieve(q);
         
-        Venda v = new Venda(null, p1);
+        q = em.createQuery("FROM Pessoa WHERE cpf = :cpf");
+        q.setParameter("cpf", "69741558082");
+        Pessoa p2 = pv.retrieve(q);
+        
+        Venda v = new Venda(null, p1, p2);
         
         v.addProduto(new VendaProduto(new Produto(null, p1, "Burger", "Carne", "Hamburger", "img", 25d, 10)));
         v.addProduto(new VendaProduto(new Produto(null, p1, "XBurger", "Carne", "Hamburger", "img", 25d, 10)));

@@ -1,6 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
@@ -36,7 +35,7 @@ public class Produto implements Serializable{
     protected String tipo;
     
     //Relacionando dados
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     protected Pessoa owner;
     
@@ -61,7 +60,11 @@ public class Produto implements Serializable{
     public Long getId() {
         return id;
     }
-
+    
+    public void setId(Long l) {
+        id = l;
+    }
+    
     public String getNome() {
         return nome;
     }
