@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +27,8 @@ import javax.validation.constraints.NotNull;
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
 public class Venda implements Serializable{
-
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "venda_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -40,16 +42,11 @@ public class Venda implements Serializable{
     @JoinColumn(name = "user_id")
     private Pessoa owner;
     
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "seller_id")
-    private Pessoa seller;
-    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "venda")
     private List<VendaProduto> produtos;
 
-    public Venda(Long id, Pessoa owner, Pessoa seller) {
+    public Venda(Long id, Pessoa owner) {
         this.id = id;
-        this.seller = seller;
         this.total = 0;
         this.date = Util.convertToLocalDateViaInstant(new Date());
         this.owner = owner;
@@ -113,7 +110,13 @@ public class Venda implements Serializable{
     public void addProduto(VendaProduto produto) {
         produto.setVenda(this);
         this.produtos.add(produto);
-        this.total += produto.getProduto().getPrice();
+    }
+    
+    public void updateVendaPrice(){
+        total = 0;
+        for(VendaProduto vp : produtos){
+            total += vp.getProduto().getPrice()*vp.getQtd();
+        }
     }
     
     public List<VendaProduto> getProdutos(){
@@ -123,14 +126,6 @@ public class Venda implements Serializable{
     @Override
     public String toString() {
         return "Venda{" + "id=" + id + ", total=" + total + ", date=" + date + ", owner=" + owner + '}';
-    }
-
-    public Pessoa getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Pessoa seller) {
-        this.seller = seller;
     }
     
 }

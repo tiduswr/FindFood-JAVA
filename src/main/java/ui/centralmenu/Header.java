@@ -1,11 +1,47 @@
 package ui.centralmenu;
 
+import controller.Controller;
 import controller.HeaderComponent;
+import java.awt.event.ActionEvent;
+import ui.MenuCentral;
+import ui.components.Notification;
 
 public class Header extends javax.swing.JPanel implements HeaderComponent{
 
+    private Controller con = null;
+    
     public Header() {
         initComponents();
+    }
+    
+    public Header(Controller con){
+        this.con = con;
+        initComponents();
+        saldo.addActionListener((ActionEvent e) -> {
+            InputBox input = new InputBox(MenuCentral.getFrame(), true);
+            input.newInput("Depositar Dinheiro", "Digite o valor que você deseja depositar!");
+            
+            if(input.getInput() != null){
+                double money;
+                try{
+                    money = Double.parseDouble(input.getInput());
+                    this.con.depositarDinheiro(money);
+                    this.con.updateHeader(this);
+                }catch(NumberFormatException ex){
+                    Notification n = new Notification(MenuCentral.getFrame(), Notification.Type.WARNING, 
+                                            Notification.Location.BOTTOM_RIGHT, "Digite um número Real!");
+                    n.showNotification();
+                }
+            }
+            input.dispose();
+        });
+        carrinho.addActionListener((ActionEvent e) -> {
+        
+            CarrinhoCompras cart = new CarrinhoCompras(con, MenuCentral.getFrame(), true);
+            
+            
+            
+        });
     }
     
     @Override

@@ -1,6 +1,7 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
@@ -19,12 +20,16 @@ import javax.persistence.OneToOne;
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
 public class VendaProduto implements Serializable{
+    private static final long serialVersionUID = 1L;
     
     @Id
     @Column(name = "venda_produto_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     
+    private int qtd;
+    
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "venda_id")
     private Venda venda;
@@ -34,10 +39,12 @@ public class VendaProduto implements Serializable{
     private Produto produto;
     
     public VendaProduto() {
+        this.qtd = 1;
     }
     
     public VendaProduto(Produto p) {
         this.produto = p;
+        this.qtd = 1;
     }
     
     public Venda getVenda() {
@@ -62,6 +69,14 @@ public class VendaProduto implements Serializable{
 
     public void setProduto(Produto produto) {
         this.produto = produto;
+    }
+
+    public int getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(int qtd) {
+        this.qtd = qtd;
     }
     
 }

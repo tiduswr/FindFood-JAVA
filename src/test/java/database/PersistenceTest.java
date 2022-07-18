@@ -107,11 +107,11 @@ public class PersistenceTest {
         q.setParameter("cpf", "69741558082");
         Pessoa p2 = pv.retrieve(q);
         
-        Venda v = new Venda(null, p1, p2);
+        Venda v = new Venda(null, p1);
         
-        v.addProduto(new VendaProduto(new Produto(null, p1, "Burger", "Carne", "Hamburger", "img", 25d, 10)));
-        v.addProduto(new VendaProduto(new Produto(null, p1, "XBurger", "Carne", "Hamburger", "img", 25d, 10)));
-        v.addProduto(new VendaProduto(new Produto(null, p1, "ZBurger", "Carne", "Hamburger", "img", 25d, 10)));
+        v.addProduto(new VendaProduto(new Produto(null, p2, "Burger", "Carne", "Hamburger", "img", 25d, 10)));
+        v.addProduto(new VendaProduto(new Produto(null, p2, "XBurger", "Carne", "Hamburger", "img", 25d, 10)));
+        v.addProduto(new VendaProduto(new Produto(null, p2, "ZBurger", "Carne", "Hamburger", "img", 25d, 10)));
         System.out.println("----------Persisting...");
         rv.persist(v);
         

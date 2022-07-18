@@ -16,15 +16,15 @@ public final class MenuCentral extends javax.swing.JFrame {
     private Controller con;
     
     public MenuCentral() {
-        initComponents();
         con = new Controller();
+        initComponents();
         initConfigs();
         updateHeader();
     }
     
     public MenuCentral(Controller con) {
+        this.con = con;
         initComponents();
-        this.con = con;        
         initConfigs();
         
         menuLateral.config(MenuCentral.this);
@@ -70,6 +70,7 @@ public final class MenuCentral extends javax.swing.JFrame {
                     setForm(new UserCentral(con));
                     break;
                 case 2:
+                    setForm(new ComprarProdutos(con));
                     break;
                 case 3:
                     break;
@@ -111,7 +112,7 @@ public final class MenuCentral extends javax.swing.JFrame {
         panelBorder = new ui.centralmenu.PanelBorder();
         menuLateral = new ui.centralmenu.MenuLateral();
         formPanel = new javax.swing.JPanel();
-        header = new ui.centralmenu.Header();
+        header = new ui.centralmenu.Header(con);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 

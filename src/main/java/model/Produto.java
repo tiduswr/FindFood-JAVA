@@ -1,9 +1,9 @@
 package model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +19,8 @@ import org.hibernate.validator.constraints.NotBlank;
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
 public class Produto implements Serializable{
-
+    private static final long serialVersionUID = 1L;
+    
     @Id
     @Column(name = "produto_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -35,6 +36,7 @@ public class Produto implements Serializable{
     protected String tipo;
     
     //Relacionando dados
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     protected Pessoa owner;

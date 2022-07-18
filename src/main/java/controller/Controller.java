@@ -4,9 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -23,6 +22,7 @@ import model.Usuario;
 import model.Util;
 import model.ValidateClass;
 import model.Venda;
+import model.VendaProduto;
 import model.repository.ConcreteRepository;
 
 public final class Controller {
@@ -345,6 +345,52 @@ public final class Controller {
         Query q = em.createQuery("FROM Pessoa WHERE cpf = :cpf");
         q.setParameter("cpf", logged.getCpf());
         logged = repPessoa.retrieve(q);
+    }
+    
+    public void depositarDinheiro(double money){
+        ConcreteRepository<Pessoa> repPessoa = new ConcreteRepository(emf, em);
+        logged.getAccess().setSaldo(logged.getAccess().getSaldo() + money);
+        repPessoa.update(logged);
+    }
+    
+    public String getProdutosCarrinho(){
+        try {
+            if(carrinho == null) carrinho = new Venda(null, logged);
+            return Util.toJson(carrinho.getProdutos());
+            
+        } catch (JsonProcessingException ex) {
+            return null;
+        }
+    }
+    
+    public Double getCarrinhoPrecoTotal(){
+        carrinho.updateVendaPrice();
+        return carrinho.getTotal();
+    }
+    
+    public void addItemToCart(long id){
+        if(logged.getAccess().getTipo() == TipoUsuario.Cliente){
+            if(carrinho == null) carrinho = new Venda(null, logged);
+            ConcreteRepository<Produto> repProduto = new ConcreteRepository(emf, em);
+            Query q = em.createQuery("FROM Produto WHERE id = :id");
+            q.setParameter("id", id);
+            Produto p = repProduto.retrieve(q);
+
+            if(p != null && p.getOwner() != null){
+                boolean exists = false;
+                for(VendaProduto vp : carrinho.getProdutos()){
+                    if(Objects.equals(vp.getProduto().getId(), p.getId())){
+                        vp.setQtd(vp.getQtd() + 1);
+                        exists = true;
+                        break;
+                    }
+                }
+                if(!exists){
+                    VendaProduto vp = new VendaProduto(p);
+                    carrinho.addProduto(vp);
+                }
+            }
+        }
     }
     
 }
