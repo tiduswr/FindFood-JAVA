@@ -108,6 +108,9 @@ public class ComprarProdutos extends javax.swing.JPanel {
         jScrollPane1.setBorder(null);
         jScrollPane1.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         jScrollPane1.setOpaque(false);
+
+        gridList.setBackground(new java.awt.Color(204, 204, 204));
+        gridList.setOpaque(true);
         jScrollPane1.setViewportView(gridList);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
